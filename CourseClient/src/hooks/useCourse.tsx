@@ -1,18 +1,18 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import type { Course } from "../types";
 import type { CourseRegistrationSchema } from "../features/courses/schema/courseRegistrationSchema";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import type { AttendantApiError } from "../types";
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import { agent } from "./agent";
+import type { CourseAddSchema } from "../features/courses/schema/courseAddSchema";
 
 const getCourses = async (): Promise<Course[]> => {
-    const response = await axios.get<Course[]>(`${BASE_URL}/course`);
+    const response = await agent.get<Course[]>('/api/course');
     return response.data;
 }
 
 const addAttendant = async (data: CourseRegistrationSchema) => {
-    const response = await axios.post(`${BASE_URL}/attendant`, data)
+    const response = await agent.post('/api/attendant', data)
     return response.data;
 }
 
@@ -27,4 +27,16 @@ export const useAddAttendant = () => {
     return useMutation<unknown, AxiosError<AttendantApiError>, CourseRegistrationSchema>({
         mutationFn: addAttendant
     });
+}
+
+export const useCourse = () => {
+    const addCourse = useMutation({
+        mutationFn: async (data: CourseAddSchema) => {
+            const response = await agent.post('/api/course/add', data);
+
+            return response.data;
+        }
+    });
+
+    return { addCourse }
 }

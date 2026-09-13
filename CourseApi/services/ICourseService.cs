@@ -11,5 +11,6 @@ namespace CourseApi.services
     {
         Task<IEnumerable<CourseResponseDto>> GetCourses();
         Task<CourseResponseDto?> GetCourse(int id);
+        Task<(bool Success, string? Error)> AddCourse(CourseAddDto dto);
     }
 }

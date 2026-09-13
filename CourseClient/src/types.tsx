@@ -24,3 +24,12 @@ type ValidationErrorApiError = {
 };
 
 export type AttendantApiError = ServiceApiError & ValidationErrorApiError;
+
+export type UserApiError = ServiceApiError & ValidationErrorApiError;
+
+export type AuthUserDto = {
+    id: string,
+    email: string,
+    name: string
+    surname: string
+}

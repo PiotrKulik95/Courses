@@ -42,5 +42,22 @@ namespace CourseApi.services
         {
             return await GetCoursesQuery().FirstOrDefaultAsync(c => c.Id == id);
         }
+
+        public async Task<(bool Success, string? Error)> AddCourse(CourseAddDto dto)
+        {
+            var course = new Course
+            {
+                Title = dto.Title,
+                StartDate = (DateOnly)dto.StartDate,
+                EndDate = (DateOnly)dto.EndDate,
+                Price = (float)dto.Price,
+                MaxCapacity = (int)dto.MaxCapacity,
+                CategoryId = (int)dto.CategoryId
+            };
+
+            dbContext.Courses.Add(course);
+            await dbContext.SaveChangesAsync();
+            return (true, null);
+        }
     }
 }
